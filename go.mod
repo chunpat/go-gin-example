@@ -34,4 +34,6 @@ replace (
 	github.com/FromChinaBoy/go-gin-example/pkg/util => /work/zzhpeng/go-gin-example/pkg/util
 	github.com/FromChinaBoy/go-gin-example/routers => /work/zzhpeng/go-gin-example/routers
 	github.com/FromChinaBoy/go-gin-example/routers/api => /work/zzhpeng/go-gin-example/routers/api
+	github.com/FromChinaBoy/go-gin-example/routers/api/v1 => /work/zzhpeng/go-gin-example/routers/api/v1
+
 )

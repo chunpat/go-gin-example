@@ -1,7 +1,7 @@
 package routers
 
 import (
-	v1 "github.com/FromChina/go-gin-example/routers/api/v1"
+	"github.com/FormChinaBoy/go-gin-example/routers/api/v1"
 	"github.com/FormChinaBoy/go-gin-example/pkg/setting"
 	"github.com/gin-gonic/gin"
 )

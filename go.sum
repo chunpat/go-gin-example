@@ -1,8 +1,6 @@
 github.com/360EntSecGroup-Skylar/excelize v1.3.1-0.20180527032555-9e463b461434 h1:sJVNhDPQ1uL3izsJQGWFQb3lUvFloaTIgqz0ClEp6aQ=
 github.com/360EntSecGroup-Skylar/excelize v1.3.1-0.20180527032555-9e463b461434/go.mod h1:R8KYLmGns0vDPe6/HyphW0mzW+MFexlGDafU0ykVEnU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/EDDYCJY/go-gin-example v0.0.0-20191007083155-a98c25f2172a h1:BTKF9FWWmFUEpQYP/i0qn/ltxAgVt8HtL610ikDYjeA=
-github.com/EDDYCJY/go-gin-example v0.0.0-20191007083155-a98c25f2172a/go.mod h1:ZhtBdok2FWyzWTvNhg/Sc9qjGz/C5i4Dnnnn4oITwuI=
 github.com/Knetic/govaluate v3.0.0+incompatible/go.mod h1:r7JcOSlj0wfOMncg0iLm8Leh48TZaKVeNIfJntJ2wa0=
 github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible/go.mod h1:r7JcOSlj0wfOMncg0iLm8Leh48TZaKVeNIfJntJ2wa0=
 github.com/OwnLocal/goes v1.0.0/go.mod h1:8rIFjBGTue3lCU0wplczcUgt9Gxgrkkrw7etMIcn8TM=
