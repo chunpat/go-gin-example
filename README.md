@@ -35,5 +35,21 @@ routers 路由逻辑处理
 runtime：应用运行时数据
 
 ## Go Modules Replace
+ go.mod 文件里,有Replace。首先你要看到我们使用的是完整的外部模块引用路径（github.com/EDDYCJY/go-gin-example/xxx），而这个模块还没推送到远程，是没有办法下载下来的，因此需要用 replace 将其指定读取本地的模块路径，这样子就可以解决本地模块读取的问题。
+
+## GORM
+go get -u github.com/jinzhu/gorm
+
+> 回调处理
+
+gorm所支持的回调方法：
+创建：BeforeSave、BeforeCreate、AfterCreate、AfterSave
+更新：BeforeSave、BeforeUpdate、AfterUpdate、AfterSave
+删除：BeforeDelete、AfterDelete
+查询：AfterFind
+
+## 常用组件
+
+
 ## 感谢
 煎鱼，学习来源https://book.eddycjy.com/golang/gin/install.html
