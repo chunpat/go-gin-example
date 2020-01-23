@@ -48,8 +48,17 @@ gorm所支持的回调方法：
 删除：BeforeDelete、AfterDelete
 查询：AfterFind
 
-## 常用组件
-
+## 常用库
+验证: go get -u github.com/astaxie/beego/validation
+常用工具: go get -u github.com/unknwon/com
+Orm: go get -u github.com/jinzhu/gorm
+Mysql: go get -u github.com/jinzhu/gorm/dialects/mysql
+Jwt: go get -u github.com/dgrijalva/jwt-go
+配置管理: go get -u github.com/go-ini/ini
+文档：go get -u github.com/swaggo/gin-swagger
+文档：go get -u github.com/swaggo/gin-swagger/swaggerFiles
 
 ## 感谢
+Go by Example：https://gobyexample.com/
+X分钟速成Y：https://learnxinyminutes.com/docs/zh-cn/go-cn/
 煎鱼，学习来源https://book.eddycjy.com/golang/gin/install.html
