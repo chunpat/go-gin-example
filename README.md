@@ -35,7 +35,7 @@ routers 路由逻辑处理
 runtime：应用运行时数据
 
 ## Go Modules Replace
- go.mod 文件里,有Replace。首先你要看到我们使用的是完整的外部模块引用路径（github.com/EDDYCJY/go-gin-example/xxx），而这个模块还没推送到远程，是没有办法下载下来的，因此需要用 replace 将其指定读取本地的模块路径，这样子就可以解决本地模块读取的问题。
+ go.mod 文件里,有Replace。首先你要看到我们使用的是完整的外部模块引用路径（github.com/fromChinaBoy/go-gin-example/xxx），而这个模块还没推送到远程，是没有办法下载下来的，因此需要用 replace 将其指定读取本地的模块路径，这样子就可以解决本地模块读取的问题。
 
 ## GORM
 go get -u github.com/jinzhu/gorm
@@ -57,8 +57,13 @@ Jwt: go get -u github.com/dgrijalva/jwt-go
 配置管理: go get -u github.com/go-ini/ini
 文档：go get -u github.com/swaggo/gin-swagger
 文档：go get -u github.com/swaggo/gin-swagger/swaggerFiles
+热更新：go get -u github.com/fvbock/endless
+
+## 热更新
+安装endless: go get -u github.com/fvbock/endless
+热更新：kill -1 pid
 
 ## 感谢
 Go by Example：https://gobyexample.com/
 X分钟速成Y：https://learnxinyminutes.com/docs/zh-cn/go-cn/
-煎鱼，学习来源https://book.eddycjy.com/golang/gin/install.html
+煎鱼，学习来源: https://book.eddycjy.com/golang/gin/install.html
