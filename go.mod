@@ -3,7 +3,6 @@ module github.com/FromChinaBoy/go-gin-example
 go 1.12
 
 require (
-	github.com/EDDYCJY/go-gin-example v0.0.0-20191007083155-a98c25f2172a
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/astaxie/beego v1.12.0
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
@@ -24,6 +23,7 @@ require (
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/mailru/easyjson v0.7.0 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
+	github.com/robfig/cron v1.2.0
 	github.com/smartystreets/assertions v1.0.1 // indirect
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/swaggo/gin-swagger v1.2.0

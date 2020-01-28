@@ -1,11 +1,5 @@
 package models
 
-import (
-	"time"
-
-	"github.com/jinzhu/gorm"
-)
-
 type Tag struct {
 	Model
 
@@ -47,22 +41,6 @@ func ExistTagByName(name string) bool {
 	return false
 }
 
-func (tag *Tag) BeforeCreate(scope *gorm.Scope) error {
-	scope.SetColumn("CreatedOn", time.Now().Unix())
-	scope.SetColumn("ModifiedOn", time.Now().Unix())
-	return nil
-}
-
-func (tag *Tag) BeforeUpdate(scope *gorm.Scope) error {
-	scope.SetColumn("ModifiedOn", time.Now().Unix())
-	return nil
-}
-
-func (tag *Tag) BeforeDelete(scope *gorm.Scope) error {
-	scope.SetColumn("deletedOn", time.Now().Unix())
-	return nil
-}
-
 func ExistTagByID(id int) bool {
 	var tag Tag
 	db.Select("id").Where("id = ?", id).First(&tag)
@@ -81,6 +59,14 @@ func DeleteTag(id int) bool {
 
 func EditTag(id int, data interface{}) bool {
 	db.Model(&Tag{}).Where("id = ?", id).Updates(data)
+
+	return true
+}
+
+// 软删除转硬删除tags
+func CleanAllTag() bool {
+	// Unscoped 让model不走回调
+	db.Unscoped().Where("deleted_on != ? ", 0).Delete(&Tag{})
 
 	return true
 }

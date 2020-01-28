@@ -63,7 +63,10 @@ Jwt: go get -u github.com/dgrijalva/jwt-go
 安装endless: go get -u github.com/fvbock/endless
 热更新：kill -1 pid
 
+## Cron
+
 ## 感谢
 Go by Example：https://gobyexample.com/
 X分钟速成Y：https://learnxinyminutes.com/docs/zh-cn/go-cn/
 煎鱼，学习来源: https://book.eddycjy.com/golang/gin/install.html
+go和php的基础语法比较：https://engineering.carsguide.com.au/go-vs-php-syntax-comparison-c1465380b8ff
