@@ -6,6 +6,7 @@ import (
 	"syscall"
 
 	"github.com/FromChinaBoy/go-gin-example/models"
+	"github.com/FromChinaBoy/go-gin-example/pkg/gredis"
 	"github.com/FromChinaBoy/go-gin-example/pkg/logging"
 	"github.com/FromChinaBoy/go-gin-example/pkg/setting"
 	"github.com/FromChinaBoy/go-gin-example/routers"
@@ -17,6 +18,7 @@ func main() {
 	setting.Setup()
 	models.Setup()
 	logging.SetUp()
+	gredis.Setup()
 
 	logging.Info("start server")
 

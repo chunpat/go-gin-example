@@ -44,23 +44,27 @@ go get -u github.com/jinzhu/gorm
 
 gorm所支持的回调方法：
 创建：BeforeSave、BeforeCreate、AfterCreate、AfterSave
+
 更新：BeforeSave、BeforeUpdate、AfterUpdate、AfterSave
+
 删除：BeforeDelete、AfterDelete
+
 查询：AfterFind
 
 ## 常用库
-验证: go get -u github.com/astaxie/beego/validation
-常用工具: go get -u github.com/unknwon/com
-Orm: go get -u github.com/jinzhu/gorm
-Mysql: go get -u github.com/jinzhu/gorm/dialects/mysql
-Jwt: go get -u github.com/dgrijalva/jwt-go
-配置管理: go get -u github.com/go-ini/ini
-文档：go get -u github.com/swaggo/gin-swagger
-文档：go get -u github.com/swaggo/gin-swagger/swaggerFiles
-热更新：go get -u github.com/fvbock/endless
+- 验证: go get -u github.com/astaxie/beego/validation
+- 常用工具: go get -u github.com/unknwon/com
+- Orm: go get -u github.com/jinzhu/gorm
+- Mysql: go get -u github.com/jinzhu/gorm/dialects/mysql
+- Jwt: go get -u github.com/dgrijalva/jwt-go
+- 配置管理: go get -u github.com/go-ini/ini
+- 文档：go get -u github.com/swaggo/gin-swagger
+- 文档：go get -u github.com/swaggo/gin-swagger/swaggerFiles
+- 热更新：go get -u github.com/fvbock/endless
 
-## 热更新
+## 热更新(需要unix系统)
 安装endless: go get -u github.com/fvbock/endless
+
 热更新：kill -1 pid
 
 ## Cron

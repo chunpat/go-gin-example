@@ -14,6 +14,7 @@ require (
 	github.com/go-openapi/spec v0.19.5 // indirect
 	github.com/go-openapi/swag v0.19.6 // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect
+	github.com/gomodule/redigo v2.0.1-0.20180401191855-9352ab68be13+incompatible
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20191106031601-ce3c9ade29de // indirect
 	github.com/jinzhu/gorm v1.9.12
@@ -48,12 +49,16 @@ replace (
 	github.com/FromChinaBoy/go-gin-example/middleware => /work/zzhpeng/go-gin-example/middleware
 	github.com/FromChinaBoy/go-gin-example/middleware/jwt => /work/zzhpeng/go-gin-example/middleware/jwt
 	github.com/FromChinaBoy/go-gin-example/models => /work/zzhpeng/go-gin-example/models
+	github.com/FromChinaBoy/go-gin-example/pkg/app => /work/zzhpeng/go-gin-example/pkg/app
 	github.com/FromChinaBoy/go-gin-example/pkg/e => /work/zzhpeng/go-gin-example/pkg/e
 	github.com/FromChinaBoy/go-gin-example/pkg/file => /work/zzhpeng/go-gin-example/pkg/file
+	github.com/FromChinaBoy/go-gin-example/pkg/gredis => /work/zzhpeng/go-gin-example/pkg/gredis
 	github.com/FromChinaBoy/go-gin-example/pkg/logging => /work/zzhpeng/go-gin-example/pkg/logging
 	github.com/FromChinaBoy/go-gin-example/pkg/setting => /work/zzhpeng/go-gin-example/pkg/setting
 	github.com/FromChinaBoy/go-gin-example/pkg/upload => /work/zzhpeng/go-gin-example/pkg/upload
 	github.com/FromChinaBoy/go-gin-example/pkg/util => /work/zzhpeng/go-gin-example/pkg/util
 	github.com/FromChinaBoy/go-gin-example/routers => /work/zzhpeng/go-gin-example/routers
 	github.com/FromChinaBoy/go-gin-example/routers/api => /work/zzhpeng/go-gin-example/routers/api
+	github.com/FromChinaBoy/go-gin-example/service/article_service => /work/zzhpeng/go-gin-example/service/article_service
+	github.com/FromChinaBoy/go-gin-example/service/cache_service => /work/zzhpeng/go-gin-example/service/cache_service
 )
