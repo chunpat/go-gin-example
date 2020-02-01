@@ -29,13 +29,6 @@ const (
 	FATAL
 )
 
-func init() {
-	// filePath := getLogFileFullPath()
-	// F = openLogFile(filePath)
-
-	logger = log.New(F, DefaultPrefix, log.LstdFlags)
-}
-
 func Debug(v ...interface{}) {
 	setPrefix(DEBUG)
 	logger.Println(v)

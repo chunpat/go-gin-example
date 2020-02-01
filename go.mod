@@ -52,6 +52,7 @@ replace (
 	github.com/FromChinaBoy/go-gin-example/pkg/file => /work/zzhpeng/go-gin-example/pkg/file
 	github.com/FromChinaBoy/go-gin-example/pkg/logging => /work/zzhpeng/go-gin-example/pkg/logging
 	github.com/FromChinaBoy/go-gin-example/pkg/setting => /work/zzhpeng/go-gin-example/pkg/setting
+	github.com/FromChinaBoy/go-gin-example/pkg/upload => /work/zzhpeng/go-gin-example/pkg/upload
 	github.com/FromChinaBoy/go-gin-example/pkg/util => /work/zzhpeng/go-gin-example/pkg/util
 	github.com/FromChinaBoy/go-gin-example/routers => /work/zzhpeng/go-gin-example/routers
 	github.com/FromChinaBoy/go-gin-example/routers/api => /work/zzhpeng/go-gin-example/routers/api

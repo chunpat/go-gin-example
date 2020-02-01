@@ -1,9 +1,12 @@
 package routers
 
 import (
+	"net/http"
+
 	_ "github.com/FromChinaBoy/go-gin-example/docs"
 	"github.com/FromChinaBoy/go-gin-example/middleware/jwt"
 	"github.com/FromChinaBoy/go-gin-example/pkg/setting"
+	"github.com/FromChinaBoy/go-gin-example/pkg/upload"
 	"github.com/FromChinaBoy/go-gin-example/routers/api"
 	v1 "github.com/FromChinaBoy/go-gin-example/routers/api/v1"
 	"github.com/gin-gonic/gin"
@@ -19,9 +22,11 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Recovery())
 
 	gin.SetMode(setting.ServerSetting.RunMode)
-
+	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
+	
 	// 文档
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r.POST("/upload", api.UploadImage)
 
 	//权限验证
 	r.GET("/auth", api.GetAuth)

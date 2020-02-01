@@ -18,6 +18,8 @@ func main() {
 	models.Setup()
 	logging.SetUp()
 
+	logging.Info("start server")
+
 	endless.DefaultReadTimeOut = setting.ServerSetting.ReadTimeout
 	endless.DefaultWriteTimeOut = setting.ServerSetting.WriteTimeout
 	endless.DefaultMaxHeaderBytes = 1 << 20

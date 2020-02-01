@@ -21,11 +21,11 @@ type Model struct {
 
 func Setup() {
 	var (
-		err     error
-		runMode bool
+		err error
+		// runMode bool
 	)
 
-	runMode = true
+	// runMode, _ = strconv.ParseBool(setting.ServerSetting.RunMode)
 
 	db, err = gorm.Open(setting.DatabaseSetting.Type, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		setting.DatabaseSetting.User,
@@ -41,8 +41,8 @@ func Setup() {
 		return setting.DatabaseSetting.TablePrefix + defaultTableName
 	}
 
-	db.SingularTable(runMode)
-	db.LogMode(runMode)
+	db.SingularTable(true)
+	db.LogMode(true)
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
 	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
