@@ -61,4 +61,5 @@ replace (
 	github.com/FromChinaBoy/go-gin-example/routers/api => /work/zzhpeng/go-gin-example/routers/api
 	github.com/FromChinaBoy/go-gin-example/service/article_service => /work/zzhpeng/go-gin-example/service/article_service
 	github.com/FromChinaBoy/go-gin-example/service/cache_service => /work/zzhpeng/go-gin-example/service/cache_service
+	github.com/FromChinaBoy/go-gin-example/service/tag_service => /work/zzhpeng/go-gin-example/service/tag_service
 )

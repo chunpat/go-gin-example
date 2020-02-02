@@ -17,29 +17,37 @@ type Article struct {
 	State         int    `json:"state"`
 }
 
-func ExistArticleByID(id int) (*Article, error) {
+func ExistArticleByID(id int) (bool, error) {
 	var article Article
-	err := db.Select("id").Where("id = ?", id).First(&article).Error
+	err := db.Select("id").Where("id = ? and deleted_on = ?", id, 0).First(&article).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil, err
+		return false, err
 	}
 	if article.ID > 0 {
-		return &article, nil
+		return true, nil
 	}
 
-	return &article, nil
+	return false, nil
 }
 
-func GetArticleTotal(maps interface{}) (count int) {
-	db.Model(&Article{}).Where(maps).Count(&count)
+func GetArticleTotal(maps interface{}) (int, error) {
+	var count int
+	err := db.Model(&Article{}).Where(maps).Count(&count).Error
 
-	return
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
 }
 
-func GetArticles(pageNum int, pageSize int, maps interface{}) (articles []Article) {
-	db.Preload("Tag").Where(maps).Offset(pageNum).Limit(pageSize).Find(&articles)
+func GetArticles(pageOffset int, pageSize int, maps interface{}) ([]*Article, error) {
+	var articles []*Article
+	err := db.Preload("Tag").Where(maps).Offset(pageOffset).Limit(pageSize).Find(&articles).Error
 
-	return
+	if err != nil {
+		return nil, err
+	}
+	return articles, nil
 }
 
 func GetArticle(id int) (*Article, error) {
@@ -57,14 +65,16 @@ func GetArticle(id int) (*Article, error) {
 	return &article, nil
 }
 
-func EditArticle(id int, data interface{}) bool {
-	db.Model(&Article{}).Where("id = ?", id).Updates(data)
-
-	return true
+func EditArticle(id int, data interface{}) (bool, error) {
+	err := db.Model(&Article{}).Where("id = ? AND deleted_on = ? ", id, 0).Updates(data).Error
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
-func AddArticle(data map[string]interface{}) bool {
-	db.Create(&Article{
+func AddArticle(data map[string]interface{}) (bool, error) {
+	err := db.Create(&Article{
 		TagID:         data["tag_id"].(int),
 		Title:         data["title"].(string),
 		Desc:          data["desc"].(string),
@@ -72,20 +82,29 @@ func AddArticle(data map[string]interface{}) bool {
 		CreatedBy:     data["created_by"].(string),
 		State:         data["state"].(int),
 		CoverImageUrl: data["cover_image_url"].(string),
-	})
+	}).Error
 
-	return true
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
-func DeleteArticle(id int) bool {
-	db.Where("id = ?", id).Delete(Article{})
-	return true
+func DeleteArticle(id int) (bool, error) {
+	err := db.Where("id = ?", id).Delete(Article{}).Error
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 // 软删除转硬删除Article
-func CleanAllArticle() bool {
+func CleanAllArticle() (bool, error) {
 	// Unscoped 让model不走回调
-	db.Unscoped().Where("deleted_on != ? ", 0).Delete(&Article{})
+	err := db.Unscoped().Where("deleted_on != ? ", 0).Delete(&Article{}).Error
 
-	return true
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }

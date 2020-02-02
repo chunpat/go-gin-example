@@ -59,16 +59,16 @@ func Set(key string, data interface{}, time int) error {
 	return nil
 }
 
-func Exists(key string) bool {
+func Exists(key string) (bool, error) {
 	conn := RedisConn.Get()
 	defer conn.Close()
 
 	exists, err := redis.Bool(conn.Do("EXISTS", key))
 	if err != nil {
-		return false
+		return false, err
 	}
 
-	return exists
+	return exists, nil
 }
 
 func Get(key string) ([]byte, error) {
