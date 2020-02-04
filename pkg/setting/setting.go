@@ -16,7 +16,7 @@ type App struct {
 	PageSize        int
 	RuntimeRootPath string
 
-	ImagePrefixUrl string
+	PrefixUrl      string
 	ImageSavePath  string
 	ImageMaxSize   int
 	ImageAllowExts []string
@@ -25,6 +25,9 @@ type App struct {
 	LogSaveName string
 	LogFileExt  string
 	TimeFormat  string
+
+	// export
+	ExportSavePath string
 }
 
 var AppSetting = &App{}

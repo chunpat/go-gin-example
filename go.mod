@@ -3,6 +3,7 @@ module github.com/FromChinaBoy/go-gin-example
 go 1.12
 
 require (
+	github.com/360EntSecGroup-Skylar/excelize v1.4.1
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/astaxie/beego v1.12.0
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
@@ -29,6 +30,7 @@ require (
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.6.5
+	github.com/tealeg/xlsx v1.0.5
 	github.com/unknwon/com v1.0.1
 	golang.org/x/crypto v0.0.0-20200117160349-530e935923ad // indirect
 	golang.org/x/mod v0.2.0 // indirect
@@ -37,10 +39,9 @@ require (
 	golang.org/x/sys v0.0.0-20200121082415-34d275377bf9 // indirect
 	golang.org/x/tools v0.0.0-20200122002620-f88bd7050267 // indirect
 	golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 // indirect
-	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/go-playground/validator.v9 v9.31.0 // indirect
 	gopkg.in/ini.v1 v1.51.1 // indirect
-	gopkg.in/yaml.v2 v2.2.7 // indirect
+	gopkg.in/yaml.v2 v2.2.8 // indirect
 )
 
 replace (
@@ -51,6 +52,7 @@ replace (
 	github.com/FromChinaBoy/go-gin-example/models => /work/zzhpeng/go-gin-example/models
 	github.com/FromChinaBoy/go-gin-example/pkg/app => /work/zzhpeng/go-gin-example/pkg/app
 	github.com/FromChinaBoy/go-gin-example/pkg/e => /work/zzhpeng/go-gin-example/pkg/e
+	github.com/FromChinaBoy/go-gin-example/pkg/export => /work/zzhpeng/go-gin-example/pkg/export
 	github.com/FromChinaBoy/go-gin-example/pkg/file => /work/zzhpeng/go-gin-example/pkg/file
 	github.com/FromChinaBoy/go-gin-example/pkg/gredis => /work/zzhpeng/go-gin-example/pkg/gredis
 	github.com/FromChinaBoy/go-gin-example/pkg/logging => /work/zzhpeng/go-gin-example/pkg/logging

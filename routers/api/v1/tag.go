@@ -5,6 +5,8 @@ import (
 
 	"github.com/FromChinaBoy/go-gin-example/pkg/app"
 	"github.com/FromChinaBoy/go-gin-example/pkg/e"
+	"github.com/FromChinaBoy/go-gin-example/pkg/export"
+	"github.com/FromChinaBoy/go-gin-example/pkg/logging"
 	"github.com/FromChinaBoy/go-gin-example/pkg/setting"
 	"github.com/FromChinaBoy/go-gin-example/pkg/util"
 	"github.com/FromChinaBoy/go-gin-example/service/tag_service"
@@ -67,7 +69,7 @@ func AddTag(c *gin.Context) {
 	valid.Range(state, 0, 1, "state").Message("状态只允许0或1")
 
 	//service
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	if valid.HasErrors() {
 		app.MarkErrors(valid.Errors)
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, nil)
@@ -118,7 +120,7 @@ func EditTag(c *gin.Context) {
 	valid.MaxSize(name, 100, "name").Message("名称最长为100字符")
 
 	//service
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	if valid.HasErrors() {
 		app.MarkErrors(valid.Errors)
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, nil)
@@ -168,7 +170,7 @@ func DeleteTag(c *gin.Context) {
 	valid.Min(id, 1, "id").Message("ID必须大于0")
 
 	//service
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	if valid.HasErrors() {
 		app.MarkErrors(valid.Errors)
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, nil)
@@ -192,5 +194,53 @@ func DeleteTag(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_DELETE_TAG_FAIL, nil)
 		return
 	}
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
+}
+
+func ExportTag(c *gin.Context) {
+	appG := app.Gin{C: c}
+	name := c.PostForm("name")
+	state := -1
+	if arg := c.PostForm("state"); arg != "" {
+		state = com.StrTo(arg).MustInt()
+	}
+
+	tagService := tag_service.Tag{
+		Name:     name,
+		State:    state,
+		PageNum:  util.GetPage(c),
+		PageSize: 100000,
+	}
+
+	filename, err := tagService.Export()
+	if err != nil {
+		appG.Response(http.StatusOK, e.ERROR_EXPORT_TAG_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
+		"export_url":      export.GetExcelFullUrl(filename),
+		"export_save_url": export.GetExcelPath() + filename,
+	})
+}
+
+func ImportTag(c *gin.Context) {
+	appG := app.Gin{C: c}
+
+	file, _, err := c.Request.FormFile("file")
+	if err != nil {
+		logging.Warn(err)
+		appG.Response(http.StatusOK, e.ERROR, nil)
+		return
+	}
+
+	tagService := tag_service.Tag{}
+	err = tagService.Import(file)
+	if err != nil {
+		logging.Warn(err)
+		appG.Response(http.StatusOK, e.ERROR_IMPORT_TAG_FAIL, nil)
+		return
+	}
+
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
