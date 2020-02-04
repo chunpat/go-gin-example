@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/FromChinaBoy/go-gin-example/pkg/app"
@@ -24,7 +23,7 @@ func GetTags(c *gin.Context) {
 	}
 
 	//service
-	appG := app.Gin{}
+	appG := app.Gin{c}
 	tagService := tag_service.Tag{
 		Name:  name,
 		State: state,
@@ -34,16 +33,12 @@ func GetTags(c *gin.Context) {
 	}
 
 	tags, err := tagService.GetAll()
-	fmt.Print(tags)
-	appG.Response(http.StatusOK, e.SUCCESS, &tags)
-
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_TAGS_FAIL, nil)
 		return
 	}
 
 	count, err := tagService.Count()
-
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_COUNT_TAG_FAIL, nil)
 		return
@@ -72,7 +67,7 @@ func AddTag(c *gin.Context) {
 	valid.Range(state, 0, 1, "state").Message("状态只允许0或1")
 
 	//service
-	appG := app.Gin{}
+	appG := app.Gin{c}
 	if valid.HasErrors() {
 		app.MarkErrors(valid.Errors)
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, nil)
@@ -86,11 +81,16 @@ func AddTag(c *gin.Context) {
 	}
 	exist, err := tagService.ExistByName()
 	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG_FAIL, nil)
 		return
 	}
 	if exist == true {
-		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG_FAIL, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG, nil)
+		return
+	}
+	_, err = tagService.Add()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_ADD_TAG_FAIL, nil)
 		return
 	}
 
@@ -118,7 +118,7 @@ func EditTag(c *gin.Context) {
 	valid.MaxSize(name, 100, "name").Message("名称最长为100字符")
 
 	//service
-	appG := app.Gin{}
+	appG := app.Gin{c}
 	if valid.HasErrors() {
 		app.MarkErrors(valid.Errors)
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, nil)
@@ -133,11 +133,21 @@ func EditTag(c *gin.Context) {
 	}
 	exist, err := tagService.ExistByID()
 	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG_FAIL, nil)
 		return
 	}
 	if exist == false {
+		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_EXIST_TAG, nil)
+		return
+	}
+
+	exist, err = tagService.ExistByName()
+	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG_FAIL, nil)
+		return
+	}
+	if exist == true {
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG, nil)
 		return
 	}
 
@@ -158,7 +168,7 @@ func DeleteTag(c *gin.Context) {
 	valid.Min(id, 1, "id").Message("ID必须大于0")
 
 	//service
-	appG := app.Gin{}
+	appG := app.Gin{c}
 	if valid.HasErrors() {
 		app.MarkErrors(valid.Errors)
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, nil)
@@ -170,11 +180,11 @@ func DeleteTag(c *gin.Context) {
 	}
 	exist, err := tagService.ExistByID()
 	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG_FAIL, nil)
 		return
 	}
 	if exist == false {
-		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG_FAIL, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_EXIST_TAG, nil)
 		return
 	}
 	_, err = tagService.Del()

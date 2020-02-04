@@ -2,6 +2,8 @@ package models
 
 import "github.com/jinzhu/gorm"
 
+import "fmt"
+
 type Tag struct {
 	Model
 
@@ -11,8 +13,8 @@ type Tag struct {
 	State      int    `json:"state"`
 }
 
-func GetTags(pageOffset int, pageSize int, maps interface{}) ([]Tag, error) {
-	var tags []Tag
+func GetTags(pageOffset int, pageSize int, maps interface{}) ([]*Tag, error) {
+	var tags []*Tag
 	err := db.Where(maps).Offset(pageOffset).Limit(pageSize).Find(&tags).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
@@ -44,11 +46,19 @@ func AddTag(name string, state int, createdBy string) (bool, error) {
 	return true, nil
 }
 
-func ExistTagByName(name string) (bool, error) {
-	var tag Tag
-	err := db.Select("id").Where("name = ?", name).First(&tag).Error
+func ExistTagByName(name string, id int) (bool, error) {
+	var (
+		err error
+		tag Tag
+	)
+	fmt.Print("id", id)
+	if id > 0 {
+		err = db.Select("id").Where("name = ? and id != ?", name, id).First(&tag).Error
+	} else {
+		err = db.Select("id").Where("name = ?", name).First(&tag).Error
+	}
 
-	if err != nil {
+	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
 	}
 
@@ -62,7 +72,7 @@ func ExistTagByName(name string) (bool, error) {
 func ExistTagByID(id int) (bool, error) {
 	var tag Tag
 	err := db.Select("id").Where("id = ? and deleted_on = ?", id, 0).First(&tag).Error
-	if err != nil {
+	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
 	}
 

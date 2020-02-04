@@ -1,6 +1,13 @@
 package tag_service
 
-import "github.com/FromChinaBoy/go-gin-example/models"
+import (
+	"encoding/json"
+
+	"github.com/FromChinaBoy/go-gin-example/models"
+	"github.com/FromChinaBoy/go-gin-example/pkg/gredis"
+	"github.com/FromChinaBoy/go-gin-example/pkg/logging"
+	"github.com/FromChinaBoy/go-gin-example/service/cache_service"
+)
 
 type Tag struct {
 	ID         int
@@ -18,7 +25,7 @@ func (t *Tag) ExistByID() (bool, error) {
 }
 
 func (t *Tag) ExistByName() (bool, error) {
-	return models.ExistTagByName(t.Name)
+	return models.ExistTagByName(t.Name, t.ID)
 }
 
 func (t *Tag) Add() (bool, error) {
@@ -40,11 +47,40 @@ func (t *Tag) Edit() (bool, error) {
 	return models.EditTag(t.ID, tag)
 }
 
-func (t *Tag) GetAll() ([]models.Tag, error) {
+func (t *Tag) GetAll() ([]*models.Tag, error) {
+	var cacheTags []*models.Tag
+	cacheService := cache_service.Tag{
+		Name:     t.Name,
+		State:    t.State,
+		PageNum:  t.PageNum,
+		PageSize: t.PageSize,
+	}
+
+	key := cacheService.GetTagsKey()
+	exist, err := gredis.Exists(key)
+	print("key:", exist, err)
+	if err != nil {
+		print("error")
+		//logging redis error
+		logging.Error("redis error", err)
+	}
+
+	//use redis cache data
+	if exist == true {
+		data, err := gredis.Get(key)
+		if err != nil {
+			logging.Info("redis error :", err)
+		} else {
+			json.Unmarshal(data, &cacheTags)
+			return cacheTags, nil
+		}
+	}
+
 	tags, err := models.GetTags(t.PageNum, t.PageSize, t.getMaps())
 	if err != nil {
 		return nil, err
 	}
+	gredis.Set(key, tags, 3600)
 	return tags, nil
 }
 
@@ -57,17 +93,18 @@ func (t *Tag) Del() (bool, error) {
 }
 
 func (t *Tag) getMaps() map[string]interface{} {
-	var maps map[string]interface{}
+	maps := make(map[string]interface{})
+	maps["deleted_on"] = 0
 	if t.Name != "" {
 		maps["name"] = t.Name
 	}
-	if t.Name != "" {
+	if t.State != -1 {
 		maps["state"] = t.State
 	}
 
 	if t.ModifiedBy != "" {
 		maps["modified_by"] = t.ModifiedBy
 	}
-
+	maps["deleted_on"] = 0
 	return maps
 }
