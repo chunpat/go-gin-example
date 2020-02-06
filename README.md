@@ -61,6 +61,7 @@ gorm所支持的回调方法：
 - 文档：go get -u github.com/swaggo/gin-swagger
 - 文档：go get -u github.com/swaggo/gin-swagger/swaggerFiles
 - 热更新：go get -u github.com/fvbock/endless
+- 导入导出：go get -u github.com/360EntSecGroup-Skylar/excelize
 
 ## 热更新(需要unix系统)
 安装endless: go get -u github.com/fvbock/endless

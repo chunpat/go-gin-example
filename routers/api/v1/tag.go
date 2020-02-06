@@ -25,7 +25,7 @@ func GetTags(c *gin.Context) {
 	}
 
 	//service
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	tagService := tag_service.Tag{
 		Name:  name,
 		State: state,
@@ -233,7 +233,6 @@ func ImportTag(c *gin.Context) {
 		appG.Response(http.StatusOK, e.ERROR, nil)
 		return
 	}
-
 	tagService := tag_service.Tag{}
 	err = tagService.Import(file)
 	if err != nil {
