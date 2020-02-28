@@ -2,10 +2,11 @@ package models
 
 import (
 	"fmt"
+	"github.com/chunpat/go-gin-example/pkg/logging"
 	"log"
 	"time"
 
-	"github.com/FromChinaBoy/go-gin-example/pkg/setting"
+	"github.com/chunpat/go-gin-example/pkg/setting"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -35,6 +36,7 @@ func Setup() {
 
 	if err != nil {
 		log.Println(err)
+		logging.Error(err)
 	}
 
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {

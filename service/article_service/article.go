@@ -2,11 +2,15 @@ package article_service
 
 import (
 	"encoding/json"
-
-	"github.com/FromChinaBoy/go-gin-example/models"
-	"github.com/FromChinaBoy/go-gin-example/pkg/gredis"
-	"github.com/FromChinaBoy/go-gin-example/pkg/logging"
-	"github.com/FromChinaBoy/go-gin-example/service/cache_service"
+	"github.com/360EntSecGroup-Skylar/excelize/v2"
+	"github.com/chunpat/go-gin-example/models"
+	"github.com/chunpat/go-gin-example/pkg/export"
+	"github.com/chunpat/go-gin-example/pkg/gredis"
+	"github.com/chunpat/go-gin-example/pkg/logging"
+	"github.com/chunpat/go-gin-example/service/cache_service"
+	"strconv"
+	"time"
+	"fmt"
 )
 
 type Article struct {
@@ -56,43 +60,43 @@ func (a *Article) Get() (*models.Article, error) {
 }
 
 func (a *Article) GetAll() ([]*models.Article, error) {
-	var cacheArticle []*models.Article
+	//var cacheArticle []*models.Article
 
-	cache := cache_service.Article{
-		TagID:    a.TagID,
-		State:    a.State,
-		PageNum:  a.PageNum,
-		PageSize: a.PageSize,
-	}
-	key := cache.GetArticlesKey()
-	exist, err := gredis.Exists(key)
-	if err != nil {
-		//logging redis error
-		logging.Error("redis error", err)
-	}
-
-	//use redis cache data
-	if exist == true {
-		data, err := gredis.Get(key)
-		if err != nil {
-			logging.Info("redis error :", err)
-		} else {
-			json.Unmarshal(data, &cacheArticle)
-			return cacheArticle, nil
-		}
-	}
+	//cache := cache_service.Article{
+	//	TagID:    a.TagID,
+	//	State:    a.State,
+	//	PageNum:  a.PageNum,
+	//	PageSize: a.PageSize,
+	//}
+	//key := cache.GetArticlesKey()
+	//exist, err := gredis.Exists(key)
+	//if err != nil {
+	//	//logging redis error
+	//	logging.Error("redis error", err)
+	//}
+	//
+	////use redis cache data
+	//if exist == true {
+	//	data, err := gredis.Get(key)
+	//	if err != nil {
+	//		logging.Info("redis error :", err)
+	//	} else {
+	//		json.Unmarshal(data, &cacheArticle)
+	//		return cacheArticle, nil
+	//	}
+	//}
 
 	articles, err := models.GetArticles(a.PageNum, a.PageSize, a.getMaps())
 	if err != nil {
 		return nil, err
 	}
 
-	gredis.Set(key, articles, 3600)
+	//gredis.Set(key, articles, 3600)
 	return articles, nil
 }
 
 func (a *Article) Count() (int, error) {
-	return models.GetArticleTotal(a.getMaps)
+	return models.GetArticleTotal(a.getMaps())
 }
 
 func (a *Article) Add() (bool, error) {
@@ -149,4 +153,82 @@ func (a *Article) getMaps() map[string]interface{} {
 	}
 
 	return maps
+}
+
+//使用excelize流导出
+func (a *Article) Export() (string, error) {
+	file := excelize.NewFile()
+	streamWriter, err := file.NewStreamWriter("Sheet1")
+	if err != nil {
+		println(err.Error())
+	}
+	styleID, err := file.NewStyle(`{"font":{"color":"#777777"}}`)
+	if err != nil {
+		println(err.Error())
+	}
+	if err := streamWriter.SetRow("A1", []interface{}{excelize.Cell{StyleID: styleID, Value: "文章编号"}}); err != nil {
+		println(err.Error())
+	}
+	if err := streamWriter.SetRow("B1", []interface{}{excelize.Cell{StyleID: styleID, Value: "文章tags"}}); err != nil {
+		println(err.Error())
+	}
+	if err := streamWriter.SetRow("C1", []interface{}{excelize.Cell{StyleID: styleID, Value: "文章名"}}); err != nil {
+		println(err.Error())
+	}
+	if err := streamWriter.SetRow("D1", []interface{}{excelize.Cell{StyleID: styleID, Value: "描述"}}); err != nil {
+		println(err.Error())
+	}
+	if err := streamWriter.SetRow("E1", []interface{}{excelize.Cell{StyleID: styleID, Value: "内容"}}); err != nil {
+		println(err.Error())
+	}
+	if err := streamWriter.SetRow("F1", []interface{}{excelize.Cell{StyleID: styleID, Value: "创建时间"}}); err != nil {
+		println(err.Error())
+	}
+	if err := streamWriter.SetRow("G1", []interface{}{excelize.Cell{StyleID: styleID, Value: "封面"}}); err != nil {
+		println(err.Error())
+	}
+
+	articles, err := a.GetAll()
+
+	for key, a := range articles {
+		fmt.Printf("%+v\n", key) // {x:1 y:2}
+		fmt.Printf("%+v\n", a) // {x:1 y:2}
+		row := make([]interface{}, 7)
+		values := []string{
+			strconv.Itoa(a.ID),
+			a.Tag.Name,
+			a.Title,
+			a.Desc,
+			a.Content,
+			strconv.Itoa(a.CreatedOn),
+			a.CoverImageUrl,
+		}
+
+		for key, value := range values {
+			row[key] = value
+		}
+
+		cell, _ := excelize.CoordinatesToCellName(1, key + 2)
+		if err := streamWriter.SetRow(cell, row); err != nil {
+			println(err.Error())
+		}
+	}
+
+	if err := streamWriter.Flush(); err != nil {
+		println(err.Error())
+	}
+
+	time := strconv.Itoa(int(time.Now().Unix()))
+	filename := "artcles-" + time + ".xlsx"
+
+	//mkdir
+	fullPath,err := export.GetPwdFullPath(filename)
+	if err != nil {
+		return "permission dir", err
+	}
+
+	if err := file.SaveAs(fullPath); err != nil {
+		println(err.Error())
+	}
+	return filename, nil
 }

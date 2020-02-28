@@ -1,15 +1,16 @@
 package v1
 
 import (
+	"github.com/chunpat/go-gin-example/pkg/export"
 	"net/http"
 
-	"github.com/FromChinaBoy/go-gin-example/models"
-	"github.com/FromChinaBoy/go-gin-example/pkg/app"
-	"github.com/FromChinaBoy/go-gin-example/pkg/e"
-	"github.com/FromChinaBoy/go-gin-example/pkg/setting"
-	"github.com/FromChinaBoy/go-gin-example/pkg/util"
-	"github.com/FromChinaBoy/go-gin-example/service/article_service"
-	"github.com/FromChinaBoy/go-gin-example/service/tag_service"
+	"github.com/chunpat/go-gin-example/models"
+	"github.com/chunpat/go-gin-example/pkg/app"
+	"github.com/chunpat/go-gin-example/pkg/e"
+	"github.com/chunpat/go-gin-example/pkg/setting"
+	"github.com/chunpat/go-gin-example/pkg/util"
+	"github.com/chunpat/go-gin-example/service/article_service"
+	"github.com/chunpat/go-gin-example/service/tag_service"
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 	"github.com/unknwon/com"
@@ -274,4 +275,52 @@ func DeleteArticle(c *gin.Context) {
 		return
 	}
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
+}
+
+
+//删除文章
+func ExportArticle(c *gin.Context) {
+	appG := app.Gin{c}
+	maps := make(map[string]interface{})
+	valid := validation.Validation{}
+
+	var state int = -1
+	if arg := c.Query("state"); arg != "" {
+		state = com.StrTo(arg).MustInt()
+		maps["state"] = state
+
+		valid.Range(state, 0, 1, "state").Message("状态只允许0或1")
+	}
+
+	var tagId int = -1
+	if arg := c.Query("tag_id"); arg != "" {
+		tagId = com.StrTo(arg).MustInt()
+		maps["tag_id"] = tagId
+
+		valid.Min(tagId, 1, "tag_id").Message("标签ID必须大于0")
+	}
+
+	code := e.INVALID_PARAMS
+	if valid.HasErrors() {
+		app.MarkErrors(valid.Errors)
+		appG.Response(http.StatusBadRequest, code, nil)
+		return
+	}
+	articleService := article_service.Article{
+		State:    state,
+		TagID:    tagId,
+		PageNum:  util.GetPage(c),
+		PageSize: setting.AppSetting.PageSize,
+	}
+	filename, err := articleService.Export()
+
+	if err != nil {
+		appG.Response(http.StatusOK, e.ERROR_EXPORT_ARTICLE_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
+		"export_url":      export.GetExcelFullUrl(filename),
+		"export_save_url": export.GetExcelPath() + filename,
+	})
 }

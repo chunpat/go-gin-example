@@ -69,9 +69,15 @@ gorm所支持的回调方法：
 热更新：kill -1 pid
 
 ## Cron
+-1、定时删除无用假删除的数据
+-2、定时删除无用数据，例如导出的过去15天的excel表
+
+## excelize
+使用v2版本：go get github.com/360EntSecGroup-Skylar/excelize/v2
+使用流导入。
 
 ## 感谢
-Go by Example：https://gobyexample.com/
-X分钟速成Y：https://learnxinyminutes.com/docs/zh-cn/go-cn/
-煎鱼，学习来源: https://book.eddycjy.com/golang/gin/install.html
-go和php的基础语法比较：https://engineering.carsguide.com.au/go-vs-php-syntax-comparison-c1465380b8ff
+- Go by Example：https://gobyexample.com/
+- X分钟速成Y：https://learnxinyminutes.com/docs/zh-cn/go-cn/
+- 煎鱼，学习来源: https://book.eddycjy.com/golang/gin/install.html
+- go和php的基础语法比较：https://engineering.carsguide.com.au/go-vs-php-syntax-comparison-c1465380b8ff

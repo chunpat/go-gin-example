@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/FromChinaBoy/go-gin-example/pkg/file"
-	"github.com/FromChinaBoy/go-gin-example/pkg/setting"
+	"github.com/chunpat/go-gin-example/pkg/file"
+	"github.com/chunpat/go-gin-example/pkg/setting"
 )
 
 func SetUp() {

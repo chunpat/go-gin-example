@@ -3,13 +3,13 @@ package routers
 import (
 	"net/http"
 
-	_ "github.com/FromChinaBoy/go-gin-example/docs"
-	"github.com/FromChinaBoy/go-gin-example/middleware/jwt"
-	"github.com/FromChinaBoy/go-gin-example/pkg/export"
-	"github.com/FromChinaBoy/go-gin-example/pkg/setting"
-	"github.com/FromChinaBoy/go-gin-example/pkg/upload"
-	"github.com/FromChinaBoy/go-gin-example/routers/api"
-	v1 "github.com/FromChinaBoy/go-gin-example/routers/api/v1"
+	_ "github.com/chunpat/go-gin-example/docs"
+	"github.com/chunpat/go-gin-example/middleware/jwt"
+	"github.com/chunpat/go-gin-example/pkg/export"
+	"github.com/chunpat/go-gin-example/pkg/setting"
+	"github.com/chunpat/go-gin-example/pkg/upload"
+	"github.com/chunpat/go-gin-example/routers/api"
+	v1 "github.com/chunpat/go-gin-example/routers/api/v1"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -59,7 +59,8 @@ func InitRouter() *gin.Engine {
 		apiv1.PUT("/articles/:id", v1.EditArticle)
 		//删除指定文章
 		apiv1.DELETE("/articles/:id", v1.DeleteArticle)
-
+		//导出文章
+		apiv1.POST("/articles/export", v1.ExportArticle)
 	}
 
 	return r

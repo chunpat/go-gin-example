@@ -3,10 +3,10 @@ package api
 import (
 	"net/http"
 
-	"github.com/FromChinaBoy/go-gin-example/models"
-	"github.com/FromChinaBoy/go-gin-example/pkg/e"
-	"github.com/FromChinaBoy/go-gin-example/pkg/logging"
-	"github.com/FromChinaBoy/go-gin-example/pkg/util"
+	"github.com/chunpat/go-gin-example/models"
+	"github.com/chunpat/go-gin-example/pkg/e"
+	"github.com/chunpat/go-gin-example/pkg/logging"
+	"github.com/chunpat/go-gin-example/pkg/util"
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 )

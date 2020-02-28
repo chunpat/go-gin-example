@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/FromChinaBoy/go-gin-example/models"
+	"github.com/chunpat/go-gin-example/models"
 	"github.com/robfig/cron"
 )
 

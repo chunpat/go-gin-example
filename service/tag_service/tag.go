@@ -2,18 +2,16 @@ package tag_service
 
 import (
 	"encoding/json"
+	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"io"
-	"os"
 	"strconv"
 	"time"
 
-	"github.com/360EntSecGroup-Skylar/excelize"
-	"github.com/FromChinaBoy/go-gin-example/models"
-	"github.com/FromChinaBoy/go-gin-example/pkg/export"
-	logfile "github.com/FromChinaBoy/go-gin-example/pkg/file"
-	"github.com/FromChinaBoy/go-gin-example/pkg/gredis"
-	"github.com/FromChinaBoy/go-gin-example/pkg/logging"
-	"github.com/FromChinaBoy/go-gin-example/service/cache_service"
+	"github.com/chunpat/go-gin-example/models"
+	"github.com/chunpat/go-gin-example/pkg/export"
+	"github.com/chunpat/go-gin-example/pkg/gredis"
+	"github.com/chunpat/go-gin-example/pkg/logging"
+	"github.com/chunpat/go-gin-example/service/cache_service"
 	"github.com/tealeg/xlsx"
 )
 
@@ -117,6 +115,7 @@ func (t *Tag) getMaps() map[string]interface{} {
 	return maps
 }
 
+//使用标准库导出
 func (t *Tag) Export() (string, error) {
 	tags, err := t.GetAll()
 	if err != nil {
@@ -159,23 +158,11 @@ func (t *Tag) Export() (string, error) {
 	filename := "tags-" + time + ".xlsx"
 
 	//mkdir
-	dir, err := os.Getwd()
+	fullPath,err := export.GetPwdFullPath(filename)
 	if err != nil {
-		return "os.Getwd err: %v", err
-	}
-	systemFullPath := dir + "/" + export.GetExcelFullPath()
-
-	perm := logfile.CheckPermission(systemFullPath)
-	if perm == true {
-		return "file.CheckPermission Permission denied src: %s", err
+		return "permission dir", err
 	}
 
-	err = logfile.IsNotExistMkDir(systemFullPath)
-	if err != nil {
-		return "file.IsNotExistMkDir src: %s, err: %v", err
-	}
-
-	fullPath := export.GetExcelFullPath() + filename
 	err = file.Save(fullPath)
 	if err != nil {
 		return "", err
@@ -184,13 +171,14 @@ func (t *Tag) Export() (string, error) {
 	return filename, nil
 }
 
+//使用excelize 导入
 func (t *Tag) Import(r io.Reader) error {
 	xlsx, err := excelize.OpenReader(r)
 	if err != nil {
 		return err
 	}
 
-	rows := xlsx.GetRows("标签信息")
+	rows,err := xlsx.GetRows("标签信息")
 	for irow, row := range rows {
 		if irow > 0 {
 			var data []string

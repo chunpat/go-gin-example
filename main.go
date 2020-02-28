@@ -5,19 +5,19 @@ import (
 	"log"
 	"syscall"
 
-	"github.com/FromChinaBoy/go-gin-example/models"
-	"github.com/FromChinaBoy/go-gin-example/pkg/gredis"
-	"github.com/FromChinaBoy/go-gin-example/pkg/logging"
-	"github.com/FromChinaBoy/go-gin-example/pkg/setting"
-	"github.com/FromChinaBoy/go-gin-example/routers"
+	"github.com/chunpat/go-gin-example/models"
+	"github.com/chunpat/go-gin-example/pkg/gredis"
+	"github.com/chunpat/go-gin-example/pkg/logging"
+	"github.com/chunpat/go-gin-example/pkg/setting"
+	"github.com/chunpat/go-gin-example/routers"
 	"github.com/fvbock/endless"
 )
 
 func main() {
 	//初始化配置
 	setting.Setup()
-	models.Setup()
 	logging.SetUp()
+	models.Setup()
 	gredis.Setup()
 
 	logging.Info("start server")

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/FromChinaBoy/go-gin-example/pkg/e"
-	"github.com/FromChinaBoy/go-gin-example/pkg/logging"
-	"github.com/FromChinaBoy/go-gin-example/pkg/upload"
+	"github.com/chunpat/go-gin-example/pkg/e"
+	"github.com/chunpat/go-gin-example/pkg/logging"
+	"github.com/chunpat/go-gin-example/pkg/upload"
 	"github.com/gin-gonic/gin"
 )
 
